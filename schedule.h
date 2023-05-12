@@ -5,4 +5,4 @@
 void add(struct list* list, char *name, int priority, int burst);
 
 // invoke the scheduler
-void schedule(struct list* list);
+void schedule(struct list* list, char type[]);

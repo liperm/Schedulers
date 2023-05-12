@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include "list.h"
-#include "schedule_fcfs.h"
+#include "schedule.h"
+#include "CPU.h"
+#include<string.h>
 
 #ifdef _WIN32 || _WIN64
    #include <Windows.h>
@@ -30,7 +32,16 @@ void add(struct list* list, char *name, int priority, int burst){
 }
 
 // invoke the scheduler
-void schedule(struct list* list){
+void schedule(struct list* list, char type[]){
+   if (strcmp(type, "fcfs") == 0) {
+      fcfs(list);
+      return;
+   }
+
+   return -1;
+}
+
+void fcfs(struct list* list) {
    // pegar o primeiro da lista
    // esperar a task acabar
    // ir para o proximo
@@ -38,7 +49,7 @@ void schedule(struct list* list){
    struct node* currentNode;
    while(list->length != 0) {
       currentNode = list->head;
-      printf("\nExecuting task %s", currentNode->task->name);
+      run(currentNode->task, currentNode->task->burst);
 
       #ifdef _WIN32 || _WIN64
          Sleep(currentNode->task->burst);
@@ -46,7 +57,7 @@ void schedule(struct list* list){
          usleep(currentNode->task->burst*1000);
       #endif
 
-      printf("\nTask %s done!\n", currentNode->task->name);
+      printf("Task %s done!\n", currentNode->task->name);
       delete(&list->head, currentNode->task);
       list->length --;
    }

@@ -12,7 +12,7 @@
 
 #include "task.h"
 #include "list.h"
-#include "schedule_fcfs.h"
+#include "schedule.h"
 
 #define SIZE 100
 
@@ -31,7 +31,6 @@ int main(int argc, char *argv[])
     list->head = NULL;
 
     in = fopen(argv[1],"r");
-
     while (fgets(task,SIZE,in) != NULL) {
         temp = strdup(task);
         name = strsep(&temp,",");
@@ -50,7 +49,7 @@ int main(int argc, char *argv[])
     printf("\n%d tasks in list", list->length);
     printf("List of tasks:\n");
     traverse(list->head);
-    schedule(list);
+    schedule(list, argv[2]);
     printf("\nFinished\n");
     return 0;
 }
