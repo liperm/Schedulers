@@ -4,7 +4,7 @@
 ## 1° - Build the project
 Build the project with `make build`;
 
-## Run 
+## 2° - Run 
 Run with `./schedule [TEXT_FILE] [SCHEDULE_TYPE]`;
 
 Text file should be the name of the file containing the tasks (eg.: tasks.txt).
