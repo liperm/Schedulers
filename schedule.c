@@ -1,14 +1,9 @@
+#include <stdlib.h>
 #include <stdio.h>
 #include "list.h"
 #include "schedule.h"
 #include "CPU.h"
 #include<string.h>
-
-#ifdef _WIN32 || _WIN64
-   #include <Windows.h>
-#else
-   #include <unistd.h>
-#endif
 
 // add a task to the list 
 void add(struct list* list, char *name, int priority, int burst){
@@ -38,28 +33,59 @@ void schedule(struct list* list, char type[]){
       return;
    }
 
+   if (strcmp(type, "rr") == 0) {
+      rr(list);
+      return;
+   }
+
+      if (strcmp(type, "rr") == 0) {
+      rrp(list);
+      return;
+   }
+
    return -1;
 }
 
 void fcfs(struct list* list) {
-   // pegar o primeiro da lista
-   // esperar a task acabar
-   // ir para o proximo
    printf("\n> Beginning scheduler FCFS:");
    struct node* currentNode;
    while(list->length != 0) {
       currentNode = list->head;
       run(currentNode->task, currentNode->task->burst);
 
-      #ifdef _WIN32 || _WIN64
-         Sleep(currentNode->task->burst);
-      #else
-         usleep(currentNode->task->burst*1000);
-      #endif
-
-      printf("Task %s done!\n", currentNode->task->name);
+      printf(" -> Task %s done!", currentNode->task->name);
       delete(&list->head, currentNode->task);
-      list->length --;
+      list->length--;
    }
+   return;
+}
+
+void rr(struct list* list) {
+   int slice;
+   printf("\n> Beginning scheduler RR:\n");
+   struct node* currentNode;
+   currentNode = list->head;
+   while(list->length != 0) {
+      slice = currentNode->task->burst < QUANTUM ?
+         currentNode->task->burst : QUANTUM;
+
+      run(currentNode->task, slice);
+
+      currentNode->task->burst -= QUANTUM;
+      if(currentNode->task->burst <= 0) {
+         printf(" -> Task %s done!", currentNode->task->name);
+         delete(&list->head, currentNode->task);
+         currentNode = list->head;
+         list->length--;
+      }
+      else {
+         currentNode = currentNode->next == NULL ? 
+            list->head : currentNode->next;
+      }
+   }
+   return;
+}
+
+void rrp(struct list* list) {
    return;
 }
