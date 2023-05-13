@@ -6,7 +6,7 @@
 #include <string.h>
 
 #include "list.h"
-#include "task.h"
+#include "../task/task.h"
 
 
 // add a new task to the list of tasks

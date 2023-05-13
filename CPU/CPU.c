@@ -3,7 +3,7 @@
  */
 
 #include <stdio.h>
-#include "task.h"
+#include "../task/task.h"
 
 #ifdef _WIN32 || _WIN64
     #include <Windows.h>

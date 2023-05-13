@@ -2,7 +2,7 @@
  * list data structure containing the tasks in the system
  */
 
-#include "task.h"
+#include "../task/task.h"
 
 struct node {
     Task *task;

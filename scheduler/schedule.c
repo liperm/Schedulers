@@ -1,8 +1,8 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include "list.h"
+#include "../list/list.h"
 #include "schedule.h"
-#include "CPU.h"
+#include "../CPU/CPU.h"
 #include<string.h>
 
 // add a task to the list 

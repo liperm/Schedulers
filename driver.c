@@ -10,9 +10,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "task.h"
-#include "list.h"
-#include "schedule.h"
+#include "task/task.h"
+#include "list/list.h"
+#include "scheduler/schedule.h"
 
 #define SIZE 100
 
