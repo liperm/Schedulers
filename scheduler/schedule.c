@@ -38,7 +38,7 @@ void schedule(struct list* list, char type[]){
       return;
    }
 
-      if (strcmp(type, "rr") == 0) {
+      if (strcmp(type, "rrp") == 0) {
       rrp(list);
       return;
    }
@@ -48,13 +48,13 @@ void schedule(struct list* list, char type[]){
 
 void fcfs(struct list* list) {
    printf("\n> Beginning scheduler FCFS:");
-   struct node* currentNode;
+   struct node* current;
    while(list->length != 0) {
-      currentNode = list->head;
-      run(currentNode->task, currentNode->task->burst);
+      current = list->head;
+      run(current->task, current->task->burst);
 
-      printf(" -> Task %s done!", currentNode->task->name);
-      delete(&list->head, currentNode->task);
+      printf(" -> Task %s done!", current->task->name);
+      delete(&list->head, current->task);
       list->length--;
    }
    return;
@@ -63,29 +63,67 @@ void fcfs(struct list* list) {
 void rr(struct list* list) {
    int slice;
    printf("\n> Beginning scheduler RR:\n");
-   struct node* currentNode;
-   currentNode = list->head;
+   struct node* current;
+   current = list->head;
    while(list->length != 0) {
-      slice = currentNode->task->burst < QUANTUM ?
-         currentNode->task->burst : QUANTUM;
+      slice = current->task->burst < QUANTUM ?
+         current->task->burst : QUANTUM;
 
-      run(currentNode->task, slice);
+      run(current->task, slice);
 
-      currentNode->task->burst -= QUANTUM;
-      if(currentNode->task->burst <= 0) {
-         printf(" -> Task %s done!", currentNode->task->name);
-         delete(&list->head, currentNode->task);
-         currentNode = list->head;
+      current->task->burst -= QUANTUM;
+      if(current->task->burst <= 0) {
+         printf(" -> Task %s done!", current->task->name);
+         delete(&list->head, current->task);
          list->length--;
       }
-      else {
-         currentNode = currentNode->next == NULL ? 
-            list->head : currentNode->next;
-      }
+      current = current->next == NULL ? 
+            list->head : current->next;
    }
    return;
 }
 
+int getGreaterPriority(struct node* head) {
+   struct node* current;
+   current = head;
+   int graterPriority = current->task->priority;
+
+   while(current != NULL) {
+      if(current->task->priority < graterPriority) {
+         graterPriority = current->task->priority;
+      }
+
+      current = current->next;
+   }
+
+   return graterPriority;
+}
+
 void rrp(struct list* list) {
+   int slice;
+   struct node* current;
+   current = list->head;
+   int greaterPriority;
+
+   while(list->length != 0) {
+      greaterPriority = getGreaterPriority(list->head);
+      if(current->task->priority == greaterPriority) {
+         slice = current->task->burst < QUANTUM ?
+            current->task->burst : QUANTUM;
+
+         run(current->task, slice);
+
+         current->task->burst -= QUANTUM;
+         if(current->task->burst <= 0) {
+            printf(" -> Task %s done!", current->task->name);
+            delete(&list->head, current->task);
+            list->length--;
+         }
+      }
+
+      current = current->next == NULL ? 
+            list->head : current->next;
+   }
+
    return;
 }
