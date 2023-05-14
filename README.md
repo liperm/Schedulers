@@ -1,4 +1,5 @@
 # Schedulers
+Scheduler algorithms used for study of operating systems.
 
 # To Run
 ## 1° - Build the project
