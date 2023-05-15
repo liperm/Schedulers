@@ -71,7 +71,7 @@ void rr(struct list* list) {
 
       run(current->task, slice);
 
-      current->task->burst -= QUANTUM;
+      current->task->burst -= slice;
       if(current->task->burst <= 0) {
          printf(" -> Task %s done!", current->task->name);
          delete(&list->head, current->task);
@@ -113,7 +113,7 @@ void rrp(struct list* list) {
 
          run(current->task, slice);
 
-         current->task->burst -= QUANTUM;
+         current->task->burst -= slice;
          if(current->task->burst <= 0) {
             printf(" -> Task %s done!", current->task->name);
             delete(&list->head, current->task);
