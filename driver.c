@@ -47,7 +47,7 @@ int main(int argc, char *argv[])
 
     // invoke the scheduler
     printf("\n%d tasks in list", list->length);
-    printf("List of tasks:\n");
+    printf("\nList of tasks:\n");
     traverse(list->head);
     schedule(list, argv[2]);
     printf("\nFinished\n");
